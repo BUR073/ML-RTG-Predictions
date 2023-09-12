@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
+import matplotlib.pyplot as plt
 
 # Load your data
 rtgData = pd.read_csv('tour_guide_data.csv')
@@ -34,9 +35,22 @@ model.fit(X, y)
 
 # Make predictions for 2024 using the model
 predictions_2024 = model.predict(predict_data[['Date', 'Temperature', 'Holiday']])
-
+res = []
 # Output predictions
 for date, prediction in zip(pd.date_range(start='2024-01-01', end='2024-12-31'), predictions_2024):
-    print(f"Date: {date.strftime('%Y-%m-%d')} -> Prediction: {prediction}")
+    res.append((date, prediction))
+res
 
+plot_dates, plot_predictions = zip(*res)
 
+# Create the plot
+plt.figure(figsize=(12, 6))
+plt.plot(plot_dates, plot_predictions, marker='o', linestyle='-')
+plt.title("Predictions for 2024")
+plt.xlabel("Date")
+plt.ylabel("Number of River Tour Guides")
+plt.grid(True)
+plt.tight_layout()
+
+# Show the plot
+plt.show()
